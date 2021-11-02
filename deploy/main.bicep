@@ -49,7 +49,7 @@ module dotnetApp 'container-app.bicep' = {
     // set an environment var for the FQDN to call
     environmentVars: [
       {
-        DOTNET_SERVICE: nodeApp.outputs.fqdn
+        DOTNET_APP_ID: 'node-app'
       }
     ]
     isExternalIngress: false
