@@ -2,7 +2,7 @@
 
 The following sample shows how to use Azure Container Apps to have one container call another within the environment.  This is possible both with or without [Dapr](https://dapr.io).  Dapr will provide mTLS, auto-retries, and additional telemetry if enabled.  
 
-The `nodeApp` (container-1-node) is an express.js API that will call a `/hello` endpoint.  This route will call the `dotnetApp` (container-2-dotnet) to return a message.  
+The `node-app` (container-1-node) is an express.js API that will call a `/hello` endpoint.  This route will call the `dotnet-app` (container-2-dotnet) to return a message.  
   
 Without Dapr - `main` branch  
 With Dapr - `dapr` branch
