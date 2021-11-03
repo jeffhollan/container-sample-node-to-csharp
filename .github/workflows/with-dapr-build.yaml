@@ -1,5 +1,5 @@
-# yaml-language-server: $schema=./build.yaml
-name: Build and Deploy
+# yaml-language-server: $schema=./with-fqdn-build.yaml
+name: With Dapr Build and Deploy
 on:
   push:
     branches: [ main ]
@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        services: [ {'imageName': 'node', 'directory': './container-1-node'}, {'imageName': 'dotnet', 'directory': './container-2-dotnet'}]
+        services: [ {'imageName': 'node', 'directory': './with-dapr/container-1-node'}, {'imageName': 'dotnet', 'directory': './with-dapr/container-2-dotnet'}]
     permissions:
       contents: read
       packages: write
@@ -83,7 +83,7 @@ jobs:
           azcliversion: 2.29.2
           inlineScript: |
             az group create -g ${{ secrets.RESOURCE_GROUP }} -l canadacentral
-            az deployment group create -g ${{ secrets.RESOURCE_GROUP }} -f ./deploy/main.bicep \
+            az deployment group create -g ${{ secrets.RESOURCE_GROUP }} -f ./with-dapr/deploy/main.bicep \
              -p \
                 nodeImage='${{ needs.build.outputs.containerImage-node }}' \
                 nodePort=3000 \
