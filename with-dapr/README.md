@@ -6,7 +6,7 @@ Calling with Dapr will leverage the Dapr sidecar to securely call the other serv
 const dotnetAppId = process.env.DOTNET_APP_ID;
 const daprPort = process.env.DAPR_HTTP_PORT || 3500;
 // ... 
-var data = await axios.get(`http://localhost:${daprPort}`, {
+var data = await axios.get(`http://localhost:${daprPort}/hello`, {
   headers: {'dapr-app-id': `${dotnetAppId}`} //sets app name for service discovery
 });
 res.send(`${JSON.stringify(data.data)}`);
