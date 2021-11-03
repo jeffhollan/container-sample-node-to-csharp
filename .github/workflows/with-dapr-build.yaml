@@ -1,11 +1,10 @@
 # yaml-language-server: $schema=./with-fqdn-build.yaml
 name: With Dapr Build and Deploy
 on:
-  push:
-    branches: [ main ]
-    # Publish semver tags as releases.
-    tags: [ 'v*.*.*' ]
-  workflow_dispatch:
+  workflow_run:
+    workflows: ["With FQDN Build and Deploy"]
+    types:
+      - completed
 
 env:
   REGISTRY: ghcr.io
@@ -16,13 +15,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        services: [ {'imageName': 'node', 'directory': './with-dapr/container-1-node'}, {'imageName': 'dotnet', 'directory': './with-dapr/container-2-dotnet'}]
+        services: [ {'imageName': 'node-dapr', 'directory': './with-dapr/container-1-node'}, {'imageName': 'dotnet-dapr', 'directory': './with-dapr/container-2-dotnet'}]
     permissions:
       contents: read
       packages: write
     outputs:
-      containerImage-node: ${{ steps.image-tag.outputs.image-node }}
-      containerImage-dotnet: ${{ steps.image-tag.outputs.image-dotnet }}
+      containerImage-node: ${{ steps.image-tag.outputs.image-node-dapr }}
+      containerImage-dotnet: ${{ steps.image-tag.outputs.image-dotnet-dapr }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2

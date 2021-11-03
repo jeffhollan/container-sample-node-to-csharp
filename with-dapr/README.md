@@ -1,11 +1,14 @@
-# Calling with FQDN
+# Calling with Dapr
 
-I can call the dotnet-app from the node-app by calling it's FQDN. Even though I use the FQDN, **calls within the environment will stay within the environment and network traffic will not leave**.
+Calling with Dapr will leverage the Dapr sidecar to securely call the other service (dotnet-app).  Dapr provides mTLS, automatic retries, and distributed tracing.
 
 ```js
-const dotnetFQDN = process.env.DOTNET_FQDN;
-// ...
-var data = await axios.get(`http://${dotnetFQDN}`);
+const dotnetAppId = process.env.DOTNET_APP_ID;
+const daprPort = process.env.DAPR_HTTP_PORT || 3500;
+// ... 
+var data = await axios.get(`http://localhost:${daprPort}`, {
+  headers: {'dapr-app-id': `${dotnetAppId}`} //sets app name for service discovery
+});
 res.send(`${JSON.stringify(data.data)}`);
 ```
 
@@ -40,27 +43,27 @@ az containerapp env create \
 
 # Deploy the container-2-dotnet dotnet-app
 az containerapp create \
-  --name dotnet-app \
+  --name dotnet-app-dapr \
   --resource-group 'sample-rg' \
   --environment 'sample-env' \
-  --image 'ghcr.io/jeffhollan/container-sample-node-to-csharp/dotnet:main' \
+  --image 'ghcr.io/jeffhollan/container-sample-node-to-csharp/dotnet-dapr:main' \
   --target-port 80 \
+  --dapr-app-id node-app \
+  --enable-dapr true \
   --ingress 'internal'
-
-DOTNET_FQDN=$(az containerapp show \
-  --resource-group 'sample-rg' \
-  --name dotnet-app \
-  --query configuration.ingress.fqdn -o tsv)
 
 # Deploy the container-1-node node-app
 az containerapp create \
-  --name node-app \
+  --name node-app-dapr \
   --resource-group 'sample-rg' \
   --environment 'sample-env' \
-  --image 'ghcr.io/jeffhollan/container-sample-node-to-csharp/node:main' \
+  --image 'ghcr.io/jeffhollan/container-sample-node-to-csharp/node-dapr:main' \
   --target-port 3000 \
   --ingress 'external' \
-  --environment-variables DOTNET_FQDN=$DOTNET_FQDN \
+  --environment-variables DOTNET_APP_ID=dotnet-app-dapr \
+  --dapr-app-id node-app \
+  --enable-dapr true \
   --query configuration.ingress.fqdn
+
 ```
 
