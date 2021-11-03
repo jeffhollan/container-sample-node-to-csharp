@@ -6,6 +6,7 @@ The `nodeApp` (container-1-node) is an express.js API that will call a `/hello` 
   
 To view the version of this solution that does not utilize Dapr, see the [`with-fqdn`](./with-fqdn) folder.  To view the version of this solution that does utilize Dapr, see the [`with-dapr`](./with-dapr) folder.
 ## Deploy and Run
+
 ### Deploy via GitHub Actions (recommended)
 The GitHub Actions will deploy an environment that includes both the with-fqdn and with-dapr versions of the solution.
 
