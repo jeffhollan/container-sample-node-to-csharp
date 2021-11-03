@@ -80,7 +80,7 @@ az containerapp create \
   --image 'ghcr.io/jeffhollan/container-sample-node-to-csharp/node:main' \
   --target-port 3000 \
   --ingress 'external' \
-  --environment-variables DOTNET_FQDN=$DOTNET_FQDN
+  --environment-variables DOTNET_FQDN=$DOTNET_FQDN \
   --query configuration.ingress.fqdn
 ```
 
