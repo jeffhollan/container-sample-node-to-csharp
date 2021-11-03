@@ -12,6 +12,25 @@ var data = await axios.get(`http://localhost:${daprPort}/hello`, {
 res.send(`${JSON.stringify(data.data)}`);
 ```
 
+## Local debug
+
+#### Terminal 1
+```bash
+export DOTNET_APP_ID=dotnet-app-dapr
+cd ./with-dapr/container-1-node
+npm install
+dapr run -a node-app-dapr -p 3000 -- npm run start
+```
+
+#### Terminal 2
+```bash
+cd ./with-dapr/container-2-dotnet
+dotnet build
+dapr run -a dotnet-app-dapr -p 5230 -- dotnet run
+```
+
+Browse to http://localhost:3000
+
 ## Deploy with CLI
 
 ```bash

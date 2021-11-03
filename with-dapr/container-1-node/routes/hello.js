@@ -7,7 +7,7 @@ const daprPort = process.env.DAPR_HTTP_PORT || 3500;
 /* GET users listing. */
 router.get('/', async  function(req, res, next) {
 
-  if(DOTNET_APP_ID)  {
+  if(dotnetAppId)  {
     // Because we're using Dapr here, it will add mTLS, retries, and advanced telemetry
     var data = await axios.get(`http://localhost:${daprPort}/hello`, {
       headers: {'dapr-app-id': `${dotnetAppId}`} //sets app name for service discovery
