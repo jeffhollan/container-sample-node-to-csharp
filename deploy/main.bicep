@@ -53,7 +53,7 @@ module nodeApp 'container-app.bicep' = {
     // set an environment var for the dotnetFQDN to call
     environmentVars: [
       {
-        name: 'DOTNET_SERVICE'
+        name: 'DOTNET_FQDN'
         value: dotnetApp.outputs.fqdn
       }
     ]
